@@ -3,5 +3,10 @@ module.exports = {
   rules: {
     //'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     //'no-multiple-empty-lines': 0
-  }
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
 };
