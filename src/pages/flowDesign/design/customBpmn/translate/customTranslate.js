@@ -22,20 +22,23 @@
 // }
 
 export default function customTranslate(translations) {
-  return function(template, replacements) {
-    replacements = replacements || {};
+  return function (_template, _replacements) {
+    let replacements = _replacements || {};
     // Translate
-    template = translations[template] || template;
+    let template = translations[_template] || _template;
 
     // Replace
-    return template.replace(/{([^}]+)}/g, function(_, key) {
+    return template.replace(/{([^}]+)}/g, function (_, key) {
       let str = replacements[key];
-      if (translations[replacements[key]] !== null && translations[replacements[key]] !== undefined) {
+      if (
+        translations[replacements[key]] !== null &&
+        translations[replacements[key]] !== undefined
+      ) {
         // eslint-disable-next-line no-mixed-spaces-and-tabs
         str = translations[replacements[key]];
         // eslint-disable-next-line no-mixed-spaces-and-tabs
       }
-      return str || "{" + key + "}";
+      return str || '{' + key + '}';
     });
   };
 }

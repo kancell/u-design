@@ -1,7 +1,5 @@
 const Index = () => {
-  return <div>
-    304
-  </div>
-}
+  return <div>304</div>;
+};
 
-export default Index
+export default Index;

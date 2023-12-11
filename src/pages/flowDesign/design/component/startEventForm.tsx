@@ -12,6 +12,7 @@ const StartEventForm: React.FC = () => {
     id: undefined,
     name: undefined,
     type: undefined,
+    documentation: undefined,
   };
 
   useEffect(() => {
@@ -22,25 +23,30 @@ const StartEventForm: React.FC = () => {
   const formElement = (
     <Form
       form={form}
-      name="开始节点"
+      name="任务表"
       layout="vertical"
       labelCol={{ span: 24 }}
       wrapperCol={{ span: 24 }}
       onValuesChange={(e) => nodeEdit(e)}
     >
       <Form.Item
-        label="节点ID"
+        label={nodeInfo.$type === 'bpmn:Process' ? '流程ID' : '节点ID'}
         name="id"
         rules={[{ required: true, message: '节点ID' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="节点名称"
+        label={nodeInfo.$type === 'bpmn:Process' ? '流程名称' : '节点名称'}
         name="name"
-        rules={[{ required: true, message: '节点名称' }]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item
+        label={nodeInfo.$type === 'bpmn:Process' ? '流程描述' : '节点描述'}
+        name="documentation"
+      >
+        <Input.TextArea />
       </Form.Item>
     </Form>
   );

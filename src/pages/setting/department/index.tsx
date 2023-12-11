@@ -1,10 +1,8 @@
+import { PageContainer } from '@ant-design/pro-components';
 import React from 'react';
-import { PageContainer } from '@ant-design/pro-components'
 
-const FlowDesign:React.FC = () => {
-  return <PageContainer>
-    1
-  </PageContainer>
-}
+const FlowDesign: React.FC = () => {
+  return <PageContainer>1</PageContainer>;
+};
 
-export default FlowDesign
+export default FlowDesign;

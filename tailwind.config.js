@@ -5,6 +5,6 @@ module.exports = {
     './src/layouts/**/*.tsx',
   ],
   corePlugins: {
-    preflight: false
+    preflight: false,
   },
-}
+};
