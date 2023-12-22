@@ -2,8 +2,8 @@
   "private": true,
   "author": "",
   "scripts": {
-    "build": "max build",
-    "dev": "max dev",
+    "build": "cross-env UMI_ENV=prod max build",
+    "dev": "cross-env UMI_ENV=dev max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
     "prepare": "husky install",
@@ -16,11 +16,11 @@
     "@ant-design/pro-components": "^2.6.43",
     "@umijs/max": "^4.0.89",
     "@umijs/plugins": "^4.0.89",
-    "@xrenders/schema-builder": "1.0.0-alpha.5",
+    "@xrenders/schema-builder": "1.0.0-alpha.13",
     "antd": "^5.11.5",
-    "bpmn-js": "^13.2.2",
+    "bpmn-js": "^16.0.0",
     "diagram-js-minimap": "^4.1.0",
-    "form-render": "^2.3.6"
+    "form-render": "^2.3.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",

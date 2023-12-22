@@ -3,7 +3,7 @@ import { useSnapshot } from '@umijs/max';
 import { Form, Input } from 'antd';
 import React, { useEffect } from 'react';
 
-const StartEventForm: React.FC = () => {
+const BaseForm: React.FC = () => {
   const { nodeInfo, nodeEdit } = useSnapshot(store);
 
   const [form] = Form.useForm();
@@ -23,8 +23,9 @@ const StartEventForm: React.FC = () => {
   const formElement = (
     <Form
       form={form}
-      name="任务表"
+      name="基础信息表"
       layout="vertical"
+      className='grid grid-cols-2 gap-x-3'
       labelCol={{ span: 24 }}
       wrapperCol={{ span: 24 }}
       onValuesChange={(e) => nodeEdit(e)}
@@ -54,4 +55,4 @@ const StartEventForm: React.FC = () => {
   return <div>{formElement}</div>;
 };
 
-export default StartEventForm;
+export default BaseForm;

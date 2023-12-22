@@ -11,7 +11,9 @@ const HomePage: React.FC = () => {
   return (
     <PageContainer ghost>
       <div className={styles.container}>
-        <div className="text-blue-500">111</div>
+        <div className="text-blue-500" onClick={() => {
+            console.log(process.env.TITLE)
+        }}>111</div>
         <Guide name={trim(name)} />
         <Input />
       </div>

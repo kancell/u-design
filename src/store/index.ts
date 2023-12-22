@@ -23,6 +23,7 @@ const state: State = proxy({
   nodeInfo: {},
   //表单中修改节点
   nodeEdit: (value: any) => {
+    console.log(value)
     Object.keys(value).forEach((key) => {
       state.nodeInfo[key] = value[key];
     });

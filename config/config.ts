@@ -2,6 +2,9 @@ import { defineConfig } from '@umijs/max';
 import routes from './routes';
 
 export default defineConfig({
+  define: {
+    'process.env': process.env
+  },
   antd: {},
   access: {},
   model: {},
@@ -9,6 +12,7 @@ export default defineConfig({
   request: {},
   layout: {
     title: 'U-Design',
+    locale: false,
   },
   routes: routes,
   valtio: {},

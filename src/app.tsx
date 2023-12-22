@@ -2,9 +2,11 @@ import {
   RequestConfig,
   RunTimeLayoutConfig,
   matchRoutes,
-  useKeepOutlets,
+  useKeepOutlets as KeepOutlets,
 } from '@umijs/max';
 import { message, notification } from 'antd';
+import './styles.css'
+import { IResponseData } from './type/typings';
 
 enum ErrorShowType {
   SILENT = 0,
@@ -12,13 +14,6 @@ enum ErrorShowType {
   ERROR_MESSAGE = 2,
   NOTIFICATION = 3,
   REDIRECT = 9,
-}
-interface ResponseStructure {
-  success: boolean;
-  data: any;
-  errorCode?: number;
-  errorMessage?: string;
-  showType?: ErrorShowType;
 }
 
 export async function getInitialState(): Promise<{ name: string }> {
@@ -40,9 +35,11 @@ export const layout: RunTimeLayoutConfig = ({
   setInitialState,
 }) => {
   return {
+    fixSiderbar: true,
+    layout: 'mix',
+    splitMenus: true,
     childrenRender: (_, props) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const element = useKeepOutlets();
+      const element = KeepOutlets();
       return <>{element}</>;
     },
   };
@@ -54,29 +51,21 @@ export const request: RequestConfig = {
     errorHandler(error: any, opts: any) {
       if (opts?.skipErrorHandler) throw error;
       if (error.name === 'BizError') {
-        const errorInfo: ResponseStructure | undefined = error.info;
+        const errorInfo: IResponseData | undefined = error.info;
         if (errorInfo) {
-          const { errorMessage, errorCode } = errorInfo;
-          switch (errorInfo.showType) {
-            case ErrorShowType.SILENT:
-              break;
-            case ErrorShowType.WARN_MESSAGE:
-              message.warning(errorMessage);
-              break;
-            case ErrorShowType.ERROR_MESSAGE:
-              message.error(errorMessage);
-              break;
-            case ErrorShowType.NOTIFICATION:
+          const { msg, code } = errorInfo;
+          switch (code) {
+            case 500:
               notification.open({
-                description: errorMessage,
-                message: errorCode,
+                description: msg,
+                message: code,
               });
               break;
-            case ErrorShowType.REDIRECT:
-              // TODO: redirect
+            case 401:
+              message.warning(msg);
               break;
             default:
-              message.error(errorMessage);
+              message.error(msg);
           }
         }
       } else if (error.response) {
@@ -90,27 +79,36 @@ export const request: RequestConfig = {
         message.error('网络异常，请稍后重试');
       }
     },
-    errorThrower: (res: ResponseStructure) => {
-      const { success, data, errorCode, errorMessage, showType } = res;
-      if (!success) {
-        const error: any = new Error(errorMessage);
-        error.name = 'BizError';
-        error.info = { errorCode, errorMessage, showType, data };
-        throw error; // 抛出自制的错误
-      }
+    errorThrower: (res: IResponseData) => {
+      const { data, code, msg } = res;
+      const error: any = new Error(msg);
+      error.name = 'BizError';
+      error.info = { code, msg, data };
+      throw error;
     },
   },
   requestInterceptors: [
-    (config: { url: string | any[] }) => {
-      // 拦截请求配置，进行个性化处理。
-      const url = config.url.concat('?token = 123');
-      return { ...config, url };
+    (url, options) => {
+     
+      let baseUrl = url.includes("http") ? "" : process.env.BASEURL
+      console.log(process.env.BASEURL)
+      return {
+        url:  `${baseUrl}${url}`,
+        options: {
+          ...options,
+          interceptors: true,
+          headers: {
+            Authorization: 'RunTimeToken',
+          },
+        },
+      }
     },
   ],
   responseInterceptors: [
     (response: any) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response;
+      console.log(data, response, 1)
       if (!data.success) {
         message.error('请求失败！');
       }
